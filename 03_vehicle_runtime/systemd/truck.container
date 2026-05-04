@@ -1,0 +1,87 @@
+[Unit]
+Description=Truck ROS 2 Container
+After=local-fs.target network.target enable-linger.service ros-build.service
+#Requires=network.target enable-linger.service
+Wants=ros-build.service
+
+[Container]
+ContainerName=ros
+Image=localhost/ros:release
+Network=host
+
+# Cap + security opts
+AddCapability=SYS_PTRACE
+SeccompProfile=unconfined
+
+# Devices
+AddDevice=/dev/gpiomem
+AddDevice=/dev/mem
+AddDevice=/dev/i2c-1
+AddDevice=/dev/spidev0.0
+AddDevice=/dev/spidev0.1
+AddDevice=/dev/media0
+AddDevice=/dev/media1
+AddDevice=/dev/media2
+AddDevice=/dev/media3
+AddDevice=/dev/media4
+AddDevice=/dev/media5
+AddDevice=/dev/media6
+AddDevice=/dev/video0
+AddDevice=/dev/video1
+AddDevice=/dev/video2
+AddDevice=/dev/video3
+AddDevice=/dev/video4
+AddDevice=/dev/video5
+AddDevice=/dev/video6
+AddDevice=/dev/video7
+AddDevice=/dev/video19
+AddDevice=/dev/video10
+AddDevice=/dev/video11
+AddDevice=/dev/video12
+AddDevice=/dev/video13
+AddDevice=/dev/video18
+AddDevice=/dev/video31
+AddDevice=/dev/video14
+AddDevice=/dev/video15
+AddDevice=/dev/video16
+AddDevice=/dev/video20
+AddDevice=/dev/video21
+AddDevice=/dev/video22
+AddDevice=/dev/video23
+AddDevice=/dev/v4l-subdev0
+AddDevice=/dev/v4l-subdev1
+AddDevice=/dev/dma_heap
+AddDevice=/dev/bus/usb/002/002
+AddDevice=/dev/HID-SENSOR-2000e1.3.auto
+
+# Keep supplementary groups
+PodmanArgs=--group-add=keep-groups
+
+# Binds / mounts
+Mount=type=bind,source=/sys/class/pwm/pwmchip0,target=/sys/class/pwm/pwmchip0
+Mount=type=bind,source=/sys/kernel/rcio/adc,target=/host_sys/kernel/rcio/adc
+Mount=type=bind,source=/sys/devices/platform/soc/fe215080.spi/spi_master/spi1,target=/sys/devices/platform/soc/fe215080.spi/spi_master/spi1
+Mount=type=bind,source=/sys/bus/spi,target=/sys/bus/spi
+Mount=type=bind,source=/sys/firmware/devicetree/base/soc/spi@7e215080,target=/sys/firmware/devicetree/base/soc/spi@7e215080
+Mount=type=bind,source=/sys/module/rcio_spi,target=/sys/module/rcio_spi
+Mount=type=bind,source=/sys/devices/platform/soc/fe204000.spi/spi_master/spi0/spi0.0,target=/sys/devices/platform/soc/fe204000.spi/spi_master/spi0/spi0.0
+Mount=type=bind,source=/sys/devices/platform/soc/fe204000.spi/spi_master/spi0/spi0.1,target=/sys/devices/platform/soc/fe204000.spi/spi_master/spi0/spi0.1
+Mount=type=bind,source=/sys/devices/platform/soc/fe215080.spi/spi_master/spi1/spi1.0,target=/sys/devices/platform/soc/fe215080.spi/spi_master/spi1/spi1.0
+Mount=type=bind,source=/run/udev,target=/run/udev
+Mount=type=bind,source=/sys/devices/platform/scb/fd500000.pcie,target=/sys/devices/platform/scb/fd500000.pcie
+Mount=type=bind,source=/dev/iio:device0,target=/dev/iio:device0
+Mount=type=bind,source=/dev/iio:device1,target=/dev/iio:device1
+
+# Workspace bind
+Volume=/home/ww/wood-walker:/workspaces/wood-walker
+
+[Service]
+# Build image before starting container (Podman 4.9-compatible; use .build file for Podman 5)
+ExecStartPre=/usr/bin/podman build \
+  --file /home/ww/wood-walker/02_ros-demo/.devcontainer/Dockerfile \
+  --target release \
+  --build-arg WORKSPACE_FOLDER=/workspaces/wood-walker/02_ros-demo \
+  --tag localhost/ros:release \
+  /home/ww/wood-walker/02_ros-demo
+#Restart=always
+TimeoutStartSec=7200

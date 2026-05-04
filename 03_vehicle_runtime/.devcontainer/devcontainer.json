@@ -1,0 +1,96 @@
+{
+    "name": "ros",
+    "build": {
+        "dockerfile": "./Dockerfile",
+        "context": "..",
+        "target": "dev",
+        "args": {
+            "WORKSPACE_FOLDER": "/workspaces/wood-walker/${localWorkspaceFolderBasename}"
+        }
+    },
+    //"appPort": [ "8765:8765", "20400:20400/udp", "20401:20401/udp", "20410-20500:20410-20500/udp" ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-azuretools.vscode-docker",
+                "ms-iot.vscode-ros",
+                "ms-python.python",
+                "ms-vscode.cpptools-extension-pack",
+                "ms-vscode.cmake-tools"
+            ]
+        }
+    },
+    "workspaceFolder": "/workspaces/wood-walker/${localWorkspaceFolderBasename}",
+    "runArgs": [
+        "--network=host",
+        "--cap-add=SYS_PTRACE",
+        "--security-opt=seccomp=unconfined",
+
+        // navio2
+        "--device=/dev/gpiomem",
+        "--device=/dev/mem",
+        "--device=/dev/i2c-1",
+        "--device=/dev/spidev0.0",
+        "--device=/dev/spidev0.1",
+
+        // Raspberry Camera Module 3
+        "--device=/dev/media0",
+        "--device=/dev/media1",
+        "--device=/dev/media2",
+        "--device=/dev/media3",
+        "--device=/dev/media4",
+        "--device=/dev/media5",
+        "--device=/dev/media6",
+        "--device=/dev/video0",
+        "--device=/dev/video1",
+        "--device=/dev/video2",
+        "--device=/dev/video3",
+        "--device=/dev/video4",
+        "--device=/dev/video5",
+        "--device=/dev/video6",
+        "--device=/dev/video7",
+        "--device=/dev/video19",
+        "--device=/dev/video10",
+        "--device=/dev/video11",
+        "--device=/dev/video12",
+        "--device=/dev/video13",
+        "--device=/dev/video18",
+        "--device=/dev/video31",
+        "--device=/dev/video13",
+        "--device=/dev/video14",
+        "--device=/dev/video15",
+        "--device=/dev/video16",
+        "--device=/dev/video20",
+        "--device=/dev/video21",
+        "--device=/dev/video22",
+        "--device=/dev/video23",
+        "--device=/dev/v4l-subdev0",
+        "--device=/dev/v4l-subdev1",
+        "--device=/dev/dma_heap",
+        "--group-add=keep-groups",
+
+        // Intel RealSense
+        "--device=/dev/bus/usb/002/002",
+        "--device=/dev/HID-SENSOR-2000e1.3.auto"
+    ],
+    "mounts": [
+        // navio2
+        "type=bind,source=/sys/class/pwm/pwmchip0,target=/sys/class/pwm/pwmchip0",
+        "type=bind,source=/sys/kernel/rcio/adc,target=/host_sys/kernel/rcio/adc",
+        "type=bind,source=/sys/devices/platform/soc/fe215080.spi/spi_master/spi1,target=/sys/devices/platform/soc/fe215080.spi/spi_master/spi1",
+        "type=bind,source=/sys/bus/spi,target=/sys/bus/spi",
+        "type=bind,source=/sys/firmware/devicetree/base/soc/spi@7e215080,target=/sys/firmware/devicetree/base/soc/spi@7e215080",
+        "type=bind,source=/sys/module/rcio_spi,target=/sys/module/rcio_spi",
+        "type=bind,source=/sys/devices/platform/soc/fe204000.spi/spi_master/spi0/spi0.0,target=/sys/devices/platform/soc/fe204000.spi/spi_master/spi0/spi0.0",
+        "type=bind,source=/sys/devices/platform/soc/fe204000.spi/spi_master/spi0/spi0.1,target=/sys/devices/platform/soc/fe204000.spi/spi_master/spi0/spi0.1",
+        "type=bind,source=/sys/devices/platform/soc/fe215080.spi/spi_master/spi1/spi1.0,target=/sys/devices/platform/soc/fe215080.spi/spi_master/spi1/spi1.0",
+        
+        // Raspberry Camera Module 3
+        "type=bind,source=/run/udev,target=/run/udev",
+
+        // Intel RealSense
+        "type=bind,source=/sys/devices/platform/scb/fd500000.pcie,target=/sys/devices/platform/scb/fd500000.pcie",
+        "type=bind,source=/dev/iio:device0,target=/dev/iio:device0",
+        "type=bind,source=/dev/iio:device1,target=/dev/iio:device1"
+    ]
+}

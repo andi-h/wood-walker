@@ -1,0 +1,3 @@
+[submodule "03_vehicle_runtime/src/timber_crane_description"]
+	path = 03_vehicle_runtime/src/timber_crane_description
+	url = https://github.com/andi-h/timber_crane_description.git

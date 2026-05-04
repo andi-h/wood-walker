@@ -1,0 +1,10 @@
+{
+    "cmake.sourceDirectory": "/home/ww/wood-walker/03_vehicle_runtime/src/navio",
+    "files.associations": {
+        "array": "cpp",
+        "bitset": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp"
+    }
+}

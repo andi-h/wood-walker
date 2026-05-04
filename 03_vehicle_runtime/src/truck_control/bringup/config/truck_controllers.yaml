@@ -1,0 +1,68 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 50  # Hz
+    lock_memory: false # see https://github.com/ros-controls/ros2_controllers/issues/1389
+
+    velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+    #imu_broadcaster:
+    #  type: imu_sensor_broadcaster/IMUSensorBroadcaster
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+velocity_controller:
+  ros__parameters:
+    joints:
+      - theta1_slewing_joint
+      - theta2_boom_joint
+      - theta3_arm_joint
+      - q4_big_telescope
+      - theta8_rotator_joint
+      - q8
+    interface_name: velocity
+
+#imu_broadcaster:
+#  ros__parameters:
+#    frame_id: tool_link
+#    sensor_name: imu
+
+gpio_controller:
+  ros__parameters:
+    type: gpio_controllers/GpioCommandController
+    gpios:
+      - truck
+    state_interfaces:
+      truck:
+        - interfaces:
+          - start
+          - horn
+          - gear
+    command_interfaces:
+      truck:
+        - interfaces:
+          - start
+          - horn
+          - gear
+          
+
+bicycle_steering_controller:
+  ros__parameters:
+    type: bicycle_steering_controller/BicycleSteeringController
+    wheelbase: 0.413
+    front_wheel_radius: 0.042
+    rear_wheel_radius: 0.042
+    front_steering: true
+    reference_timeout: 2.0
+    rear_wheels_names: ['virtual_rear_wheel_joint']
+    front_wheels_names: ['virtual_front_wheel_joint']
+    open_loop: false
+    velocity_rolling_window_size: 10
+    base_frame_id: truck_origin
+    odom_frame_id: odom
+    enable_odom_tf: true
+    twist_covariance_diagonal: [0.0, 7.0, 14.0, 21.0, 28.0, 35.0]
+    pose_covariance_diagonal: [0.0, 7.0, 14.0, 21.0, 28.0, 35.0]
+    position_feedback: false
+    use_stamped_vel: false

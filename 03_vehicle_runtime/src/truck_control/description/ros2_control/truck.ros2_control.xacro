@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="truck" params="name prefix use_mock_hardware:=^|true mock_sensor_commands:=^|false slowdown:=2.0">
+    <xacro:arg name="init_config" default="init_config.yaml" />
+    <xacro:property name="init_val_file"
+                    value="$(find truck_control)/launch/$(arg init_config)" />
+    <xacro:property name="init_val" value="${xacro.load_yaml(init_val_file)['/**']['ros__parameters']['zeros']}" />
+
+    <ros2_control name="${name}" type="system">
+
+      <hardware>
+        <xacro:if value="${use_mock_hardware}">
+          <plugin>mock_components/GenericSystem</plugin>
+          <param name="mock_sensor_commands">${mock_sensor_commands}</param>
+          <param name="position_state_following_offset">0.0</param>
+        </xacro:if>
+        <xacro:unless value="${use_mock_hardware}">
+          <plugin>truck_control/TruckHardware</plugin>
+          <param name="example_param_hw_start_duration_sec">0.0</param>
+          <param name="example_param_hw_stop_duration_sec">3.0</param>
+          <param name="example_param_hw_slowdown">${slowdown}</param>
+          <param name="example_param_max_sensor_change">5.0</param>
+        </xacro:unless>
+      </hardware>
+
+      <!-- Truck -->
+      <gpio name="truck">
+        <command_interface name="start"/>
+        <command_interface name="horn"/>
+        <command_interface name="gear"/>
+        <state_interface name="start"/>
+        <state_interface name="horn"/>
+        <state_interface name="gear"/>
+      </gpio>
+
+      <joint name="${prefix}virtual_front_wheel_joint">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+      </joint>
+      <joint name="${prefix}virtual_rear_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <!-- <state_interface name="position"/> Add if position sensor is available -->
+      </joint>
+
+      <!-- Crane -->
+      <joint name="theta1_slewing_joint">
+        <command_interface name="velocity" />
+        <state_interface name="position">
+          <param name="initial_value">${init_val['theta1_slewing_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity" />
+      </joint>
+
+      <joint name="theta2_boom_joint">
+        <command_interface name="velocity" />
+        <state_interface name="position">
+          <param name="initial_value">${init_val['theta2_boom_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity" />
+      </joint>
+
+      <joint name="theta3_arm_joint">
+        <command_interface name="velocity" />
+        <state_interface name="position">
+          <param name="initial_value">${init_val['theta3_arm_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity" />
+      </joint>
+
+      <joint name="q4_big_telescope">
+        <command_interface name="velocity" />
+        <state_interface name="position">
+          <param name="initial_value">${init_val['q4_big_telescope']}</param>
+        </state_interface>
+        <state_interface name="velocity" />
+      </joint>
+
+      <joint name="theta6_tip_joint">
+        <state_interface name="position">
+          <param name="initial_value">${init_val['theta6_tip_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity" />
+      </joint>
+
+      <joint name="theta7_tilt_joint">
+        <state_interface name="position">
+          <param name="initial_value">${init_val['theta7_tilt_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity" />
+      </joint>
+
+      <joint name="theta8_rotator_joint">
+        <command_interface name="velocity" />
+        <state_interface name="position">
+          <param name="initial_value">${init_val['theta8_rotator_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity" />
+      </joint>
+
+      <joint name="q8">
+        <command_interface name="velocity" />
+        <state_interface name="position">
+          <param name="initial_value">${init_val['q8']}</param>
+        </state_interface>
+        <state_interface name="velocity" />
+      </joint>
+
+      <joint name="q9">
+        <state_interface name="position">
+          <param name="initial_value">${init_val['q9']}</param>
+        </state_interface>
+        <state_interface name="velocity" />
+      </joint>
+    </ros2_control>
+
+  </xacro:macro>
+
+</robot>

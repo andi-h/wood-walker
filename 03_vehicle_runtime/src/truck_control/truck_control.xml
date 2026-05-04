@@ -1,0 +1,9 @@
+<library path="truck_control">
+  <class name="truck_control/TruckHardware"
+         type="truck_control::TruckHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      The ros2_control RRbot example with an integrated sensor.
+    </description>
+  </class>
+</library>

@@ -1,0 +1,18 @@
+# Not active now. Will work when Ubuntu upgrades to Podman 5
+
+[Unit]
+Description=Build the Truck ROS 2 container
+After=local-fs.target network.target enable-linger.service
+Requires=network.target enable-linger.service
+
+[Build]
+ImageTag=localhost/truck:release
+File=/home/ww/wood-walker/02_ros-demo/.devcontainer/Dockerfile
+Target=release
+Context=/home/ww/wood-walker/02_ros-demo
+
+BuildArg=WORKSPACE_FOLDER=/workspaces/wood-walker/02_ros-demo
+BuildArg=CYCLONEDDS_PEERS=192.168.2.45
+
+#[Service]
+#TimeoutStartSec=7200

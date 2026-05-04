@@ -1,0 +1,12 @@
+/**:
+  ros__parameters:
+    zeros:
+      theta1_slewing_joint: 3.1415
+      theta2_boom_joint: 0.8
+      theta3_arm_joint: -0.2
+      q4_big_telescope: 0
+      theta6_tip_joint: 1
+      theta7_tilt_joint: 1.57
+      theta8_rotator_joint: 0
+      q8: 1.8
+      q9: 1.8
