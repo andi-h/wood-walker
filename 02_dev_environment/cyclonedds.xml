@@ -8,11 +8,11 @@
       <MaxAutoParticipantIndex>89</MaxAutoParticipantIndex>
       <Peers>
         <Peer address="127.0.0.1"/>
-        <Peer address="192.168.2.206"/>
+        <Peer address="10.42.0.100"/>
       </Peers>
     </Discovery>
     <General>
       <AllowMulticast>false</AllowMulticast>
     </General>
-  </Domain> 
+  </Domain>
 </CycloneDDS>

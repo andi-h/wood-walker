@@ -8,12 +8,11 @@ User=ww
 TimeoutStartSec=7200
 ExecStartPre=/usr/bin/podman rm -f ros
 ExecStartPre=podman build \
-  --file /home/ww/wood-walker/02_ros-demo/.devcontainer/Dockerfile \
+  --file /home/ww/wood-walker/03_vehicle_runtime/.devcontainer/Dockerfile \
   --target release \
-  --build-arg WORKSPACE_FOLDER="/workspaces/wood-walker/02_ros-demo" \
-  --build-arg CYCLONEDDS_PEERS="192.168.2.45" \
+  --build-arg WORKSPACE_FOLDER="/workspaces/wood-walker/03_vehicle_runtime" \
   --tag localhost/ros:release \
-  /home/ww/wood-walker/02_ros-demo
+  /home/ww/wood-walker/03_vehicle_runtime
 ExecStart=/usr/bin/podman run -it \
     --name=ros \
     --network=host \
@@ -76,7 +75,6 @@ ExecStart=/usr/bin/podman run -it \
     -p 20400:20400/udp \
     -p 20401:20401/udp \
     -p 20410-20500:20410-20500/udp \
-    -v /home/ww/wood-walker:/workspaces/wood-walker \
     localhost/ros:release
 ExecStop=/usr/bin/podman stop ros
 ExecStopPost=-/usr/bin/podman rm -f ros

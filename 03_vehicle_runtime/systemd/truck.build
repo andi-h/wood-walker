@@ -7,12 +7,11 @@ Requires=network.target enable-linger.service
 
 [Build]
 ImageTag=localhost/truck:release
-File=/home/ww/wood-walker/02_ros-demo/.devcontainer/Dockerfile
+File=/home/ww/wood-walker/03_vehicle_runtime/.devcontainer/Dockerfile
 Target=release
-Context=/home/ww/wood-walker/02_ros-demo
+Context=/home/ww/wood-walker/03_vehicle_runtime
 
-BuildArg=WORKSPACE_FOLDER=/workspaces/wood-walker/02_ros-demo
-BuildArg=CYCLONEDDS_PEERS=192.168.2.45
+BuildArg=WORKSPACE_FOLDER=/workspaces/wood-walker/03_vehicle_runtime
 
 #[Service]
 #TimeoutStartSec=7200

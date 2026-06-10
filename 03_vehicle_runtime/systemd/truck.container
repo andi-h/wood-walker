@@ -72,16 +72,13 @@ Mount=type=bind,source=/sys/devices/platform/scb/fd500000.pcie,target=/sys/devic
 Mount=type=bind,source=/dev/iio:device0,target=/dev/iio:device0
 Mount=type=bind,source=/dev/iio:device1,target=/dev/iio:device1
 
-# Workspace bind
-Volume=/home/ww/wood-walker:/workspaces/wood-walker
-
 [Service]
 # Build image before starting container (Podman 4.9-compatible; use .build file for Podman 5)
 ExecStartPre=/usr/bin/podman build \
-  --file /home/ww/wood-walker/02_ros-demo/.devcontainer/Dockerfile \
+  --file /home/ww/wood-walker/03_vehicle_runtime/.devcontainer/Dockerfile \
   --target release \
-  --build-arg WORKSPACE_FOLDER=/workspaces/wood-walker/02_ros-demo \
+  --build-arg WORKSPACE_FOLDER=/workspaces/wood-walker/03_vehicle_runtime \
   --tag localhost/ros:release \
-  /home/ww/wood-walker/02_ros-demo
+  /home/ww/wood-walker/03_vehicle_runtime
 #Restart=always
 TimeoutStartSec=7200
